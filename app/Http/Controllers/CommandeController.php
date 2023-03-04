@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Commande;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CommandeController extends Controller
 {
@@ -14,7 +15,8 @@ class CommandeController extends Controller
      */
     public function index()
     {
-        //
+        $commande= Commande::all();
+        return response()->json($commande);
     }
 
     /**
@@ -35,7 +37,17 @@ class CommandeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Commande::create(
+           [ 
+            "idMedicament"=>$request->idMedicament,
+            "idFournisseur"=>$request->idFournisseur,
+            "quantite"=>$request->quantite,
+            "dateCommande"=>$request->dateCommande,
+            "dateLivraison"=>$request->dateLivraison,
+            "montantCommande"=>$request->montantCommande,
+           ]
+           );
+           return response()->json('Succes');
     }
 
     /**
@@ -67,9 +79,19 @@ class CommandeController extends Controller
      * @param  \App\Models\Commande  $commande
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Commande $commande)
+    public function update(Request $request, $id)
     {
-        //
+        DB::table('commandes')
+        ->where('id', $id)
+        ->update([
+            "idMedicament"=>$request->idMedicament,
+            "idFournisseur"=>$request->idFournisseur,
+            "quantite"=>$request->quantiteCommande,
+            "dateCommande"=>$request->dateCommande,
+            "dateLivraison"=>$request->dateLivraison,
+            "montantCommande"=>$request->montantCommande
+        ]);
+        
     }
 
     /**
@@ -78,8 +100,16 @@ class CommandeController extends Controller
      * @param  \App\Models\Commande  $commande
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Commande $commande)
+    public function destroy(Commande $commande, $id)
     {
-        //
+        try {
+            DB::table('commandes')->where("id", $id)->delete();
+            return response()->json(['message' => 'Suppression avec succes']);
+        } catch (\Exception $e) {
+            // \Log::error($e->getMessage());
+            return response()->json([
+                'message' => 'Une erreur se produite lors de la suppression!!'
+            ], 500);
+        }
     }
 }

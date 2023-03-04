@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Commande extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        "idMedicament",
+        "idFournisseur",
+        "quantite",
+        "dateCommande",
+        "dateLivraison",
+        "montantCommande",
+    ];
 }

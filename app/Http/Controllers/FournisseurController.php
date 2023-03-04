@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Fournisseur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FournisseurController extends Controller
 {
@@ -14,7 +15,8 @@ class FournisseurController extends Controller
      */
     public function index()
     {
-        //
+        $fournisseur = Fournisseur::all();
+        return response()->json($fournisseur);
     }
 
     /**
@@ -35,7 +37,16 @@ class FournisseurController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Fournisseur::create(
+            [
+                'nomFournisseur' => $request->nomFournisseur,
+                'adresseFournisseur' => $request->adresseFournisseur,
+                'telephoneFournisseur' => $request->telephoneFournisseur,
+                'mailFournisseur' => $request->mailFournisseur,
+
+            ]
+        );
+        return response()->json('Succes');
     }
 
     /**
@@ -67,9 +78,19 @@ class FournisseurController extends Controller
      * @param  \App\Models\Fournisseur  $fournisseur
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Fournisseur $fournisseur)
+    public function update(Request $request, $id)
     {
-        //
+        DB::table('fournisseurs')
+            ->where('id', $id)
+            ->update(
+                [
+                    'nomFournisseur' => $request->nomFournisseur,
+                    'adresseFournisseur' => $request->adresse,
+                    'telephoneFournisseur' => $request->telephone,
+                    'mailFournisseur' => $request->mail,
+                ]
+
+            );
     }
 
     /**
@@ -78,8 +99,18 @@ class FournisseurController extends Controller
      * @param  \App\Models\Fournisseur  $fournisseur
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Fournisseur $fournisseur)
+    public function destroy($id)
     {
-        //
+        try{
+            DB::table('fournisseurs')->where("id", $id)->delete();
+            return response()->json(['message'=>'Suppression avec succes']);
+        }
+        
+        catch (\Exception $e) {
+            // \Log::error($e->getMessage());
+            return response()->json([
+                'message' => 'Une erreur se produite lors de la suppression!!'
+            ], 500);
+        }
     }
 }

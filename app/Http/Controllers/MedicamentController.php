@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Medicament;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MedicamentController extends Controller
 {
@@ -14,7 +15,8 @@ class MedicamentController extends Controller
      */
     public function index()
     {
-        //
+        $medicament = Medicament::all();
+        return response()->json($medicament);
     }
 
     /**
@@ -35,7 +37,17 @@ class MedicamentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Medicament::create(
+            [
+                'codeProduit' => $request->codeProduit,
+                'nomMedicament' => $request->nomMedicament,
+                'quantite' => $request->quantite,
+                'coutUnitaire' => $request->coutUnitaire,
+                'prixVente' => $request->prixVente,
+                'nombrePlaquette' => $request->nombrePlaquette
+            ]
+        );
+        return response()->json('Success');
     }
 
     /**
@@ -67,9 +79,18 @@ class MedicamentController extends Controller
      * @param  \App\Models\Medicament  $medicament
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Medicament $medicament)
+    public function update($id, Request $request)
     {
-        //
+        DB::table('medicaments')
+            ->where('id', $id)
+            ->update([
+                'codeProduit' => $request->codeProduit,
+                'nomMedicament' => $request->nomMedicament,
+                'coutUnitaire' => $request->coutUnitaire,
+                'prixVente' => $request->prixVente,
+                'nombrePlaquette' => $request->nombrePlaquette,
+                'quantite' => $request->quantite
+            ]);
     }
 
     /**
@@ -78,8 +99,16 @@ class MedicamentController extends Controller
      * @param  \App\Models\Medicament  $medicament
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Medicament $medicament)
+    public function destroy($id)
     {
-        //
+        try {
+            DB::table('medicaments')->where("id", $id)->delete();
+            return response()->json(['message' => 'Suppression avec succes']);
+        } catch (\Exception $e) {
+            // \Log::error($e->getMessage());
+            return response()->json([
+                'message' => 'Une erreur se produite lors de la suppression!!'
+            ], 500);
+        }
     }
 }

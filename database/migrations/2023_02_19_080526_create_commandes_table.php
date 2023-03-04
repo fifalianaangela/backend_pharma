@@ -15,6 +15,9 @@ class CreateCommandesTable extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('idMedicament')->constrained();
+            $table->foreignId('idFournisseur')->constrained();
+            $table->integer('quantite');
             $table->date('dateCommande');
             $table->date('dateLivraison');
             $table->float('montantCommande');
