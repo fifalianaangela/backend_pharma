@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Medicament;
+use App\Models\Sortie;
 use Illuminate\Http\Request;
 
-class MedicamentController extends Controller
+class SortieController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,7 @@ class MedicamentController extends Controller
      */
     public function index()
     {
-        $medicament = Medicament::all();
-        return response()->json($medicament);
-        // return view('medicament', ['data' => $medicament]);
+        //
     }
 
     /**
@@ -43,10 +41,10 @@ class MedicamentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Medicament  $medicament
+     * @param  \App\Models\Sortie  $sortie
      * @return \Illuminate\Http\Response
      */
-    public function show(Medicament $medicament)
+    public function show(Sortie $sortie)
     {
         //
     }
@@ -54,10 +52,10 @@ class MedicamentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Medicament  $medicament
+     * @param  \App\Models\Sortie  $sortie
      * @return \Illuminate\Http\Response
      */
-    public function edit(Medicament $medicament)
+    public function edit(Sortie $sortie)
     {
         //
     }
@@ -66,10 +64,10 @@ class MedicamentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Medicament  $medicament
+     * @param  \App\Models\Sortie  $sortie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Medicament $medicament)
+    public function update(Request $request, Sortie $sortie)
     {
         //
     }
@@ -77,10 +75,10 @@ class MedicamentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Medicament  $medicament
+     * @param  \App\Models\Sortie  $sortie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Medicament $medicament)
+    public function destroy(Sortie $sortie)
     {
         //
     }

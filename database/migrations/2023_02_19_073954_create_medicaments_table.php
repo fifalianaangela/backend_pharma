@@ -17,7 +17,7 @@ class CreateMedicamentsTable extends Migration
             $table->id();
             $table->string('nomMedicament');
             $table->string('codeProduit');
-            $table->integer('quantiteMediament');
+            $table->integer('quantite');
             $table->float('coutUnitaire');
             $table->float('prixVente');
             $table->integer('nombrePlaquette');
