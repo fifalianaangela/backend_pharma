@@ -15,9 +15,11 @@ class CreateSortiesTable extends Migration
     {
         Schema::create('sorties', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('idMedicament')->constrained();
-            $table->integer('quantite');
-            $table->dateTime('date');
+            $table->integer('idMedicament');
+            $table->integer('stock');
+            $table->integer('dernierSortie');
+            $table->integer('nombreSortie');
+            $table->date('dateSortie');
             $table->timestamps();
         });
     }

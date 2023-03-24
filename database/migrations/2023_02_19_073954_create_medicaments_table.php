@@ -15,12 +15,14 @@ class CreateMedicamentsTable extends Migration
     {
         Schema::create('medicaments', function (Blueprint $table) {
             $table->id();
-            $table->string('nomMedicament');
-            $table->string('codeProduit');
-            $table->integer('quantite');
+            $table->string('denomination');
+            $table->string('forme');
+            $table->string('presentation');
             $table->float('coutUnitaire');
             $table->float('prixVente');
             $table->integer('nombrePlaquette');
+            $table->integer('nombreGraine');
+            $table->date('dateExpiration');
             $table->timestamps();
         });
     }

@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\EntreeController;
 use App\Http\Controllers\FournisseurController;
+use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\MedicamentController;
+use App\Http\Controllers\SortieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,17 +23,33 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// route for medicaments
 Route::get('/medicaments', [MedicamentController::class, 'index']);
 Route::post('/medicaments', [MedicamentController::class, 'store']);
 Route::put('/medicaments/{id}', [MedicamentController::class, 'update']);
 Route::delete('/medicaments/{id}', [MedicamentController::class, 'destroy']);
+
+// route for fournisseurs
 Route::get('/fournisseurs', [FournisseurController::class, 'index']);
 Route::post('/fournisseurs', [FournisseurController::class, 'store']);
 Route::put('/fournisseurs/{id}', [FournisseurController::class, 'update']);
 Route::delete('/fournisseurs/{id}', [FournisseurController::class, 'destroy']);
+
+// route for commandes
 Route::get('/commandes', [CommandeController::class, 'index']);
 Route::post('/commandes', [CommandeController::class, 'store']);
 Route::put('/commandes/{id}', [CommandeController::class, 'update']);
 Route::delete('/commandes/{id}', [CommandeController::class, 'destroy']);
 
+// route for entrees
+Route::get('/entrees', [EntreeController::class, 'index']);
+Route::post('/entrees', [EntreeController::class, 'store']);
+Route::put('/entrees/{id}', [EntreeController::class, 'update']);
+Route::delete('/entrees/{id}', [EntreeController::class, 'destroy']);
 
+// route for sorties
+Route::get('/sorties', [SortieController::class, 'index']);
+
+// route for historiques
+Route::get('/historiques', [HistoriqueController::class, 'index']);

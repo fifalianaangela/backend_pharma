@@ -2,82 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entree;
+use App\Models\Historique;
+use App\Models\Medicament;
 use App\Models\Sortie;
 use Illuminate\Http\Request;
 
 class SortieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $sortie = Sortie::join('medicaments', 'medicaments.id', '=', 'sorties.idMedicament')
+            ->get();
+        return response()->json($sortie);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $sortie = Sortie::where('idMedicament', $request->id)->first();
+        $entree = Entree::where('idMedicament', $request->id)->first();
+        $medicament = Medicament::where('id', $request->id)->first();
+        Sortie::create(
+            [
+                'idMedicament' => $request->id,
+                'stock' => $entree->nombreGraineEntree - $request->quantiteSortie,
+                'nombreSortie' => $request->quantiteSortie,
+                'dernierSortie' => $request->quantiteSortie,
+                'dateSortie' => $request->formattedDate,
+            ]
+        );
+
+        Historique::create(
+            [
+                'idMedicament' => $request->id,
+                'type' => 0,
+                'provDest' => $request->destination,
+                'quantiteSortie' => $request->quantiteSortie,
+                'lot' => $request->lot,
+                'observation' => $request->observation,
+                'date' => $request->formattedDate,
+            ]
+        );
+        return response()->json('Sortie avec succèss');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Sortie  $sortie
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Sortie $sortie)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Sortie  $sortie
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Sortie $sortie)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Sortie  $sortie
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Sortie $sortie)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Sortie  $sortie
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Sortie $sortie)
     {
         //

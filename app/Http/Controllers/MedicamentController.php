@@ -8,101 +8,68 @@ use Illuminate\Support\Facades\DB;
 
 class MedicamentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $medicament = Medicament::all();
         return response()->json($medicament);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        Medicament::create(
-            [
-                'codeProduit' => $request->codeProduit,
-                'nomMedicament' => $request->nomMedicament,
-                'quantite' => $request->quantite,
-                'coutUnitaire' => $request->coutUnitaire,
-                'prixVente' => $request->prixVente,
-                'nombrePlaquette' => $request->nombrePlaquette
-            ]
-        );
-        return response()->json('Success');
+        $medicament = Medicament::where('denomination', $request->denomination)
+            ->where('forme', $request->forme)->first();
+
+        if (!$medicament) {
+            Medicament::create(
+                [
+                    'denomination' => $request->denomination,
+                    'forme' => $request->forme,
+                    'presentation' => $request->presentation,
+                    'coutUnitaire' => $request->coutUnitaire,
+                    'prixVente' => $request->prixVente,
+                    'nombrePlaquette' => $request->nombrePlaquette,
+                    'nombreGraine' => $request->nombreGraine,
+                    'dateExpiration' => $request->dateExpiration,
+                ]
+            );
+            return response()->json('Medicament ajouté avec succèss');
+        } elseif ($medicament && strtolower($medicament->forme) !== strtolower($request->forme)) {
+            Medicament::create(
+                [
+                    'denomination' => $request->denomination,
+                    'forme' => $request->forme,
+                    'presentation' => $request->presentation,
+                    'coutUnitaire' => $request->coutUnitaire,
+                    'prixVente' => $request->prixVente,
+                    'nombrePlaquette' => $request->nombrePlaquette,
+                    'nombreGraine' => $request->nombreGraine,
+                    'dateExpiration' => $request->dateExpiration,
+                ]
+            );
+            return response()->json('Medicament ajouté avec succèss');
+        } elseif ($medicament && strtolower($medicament->forme) === strtolower($request->forme)) {
+            return response()->json('Medicament existe déjà dans la base de donnée');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Medicament  $medicament
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Medicament $medicament)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Medicament  $medicament
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Medicament $medicament)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Medicament  $medicament
-     * @return \Illuminate\Http\Response
-     */
     public function update($id, Request $request)
     {
-        DB::table('medicaments')
-            ->where('id', $id)
+        Medicament::where('id', $id)
             ->update([
-                'codeProduit' => $request->codeProduit,
-                'nomMedicament' => $request->nomMedicament,
+                'denomination' => $request->denomination,
+                'forme' => $request->forme,
+                'presentation' => $request->presentation,
                 'coutUnitaire' => $request->coutUnitaire,
                 'prixVente' => $request->prixVente,
                 'nombrePlaquette' => $request->nombrePlaquette,
-                'quantite' => $request->quantite
+                'dateExpiration' => $request->dateExpiration,
             ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Medicament  $medicament
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         try {
-            DB::table('medicaments')->where("id", $id)->delete();
+            Medicament::destroy($id);
             return response()->json(['message' => 'Suppression avec succes']);
         } catch (\Exception $e) {
             // \Log::error($e->getMessage());

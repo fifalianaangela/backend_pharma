@@ -5,14 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sortie extends Model
+class Historique extends Model
 {
     use HasFactory;
     protected $fillable = [
         'idMedicament',
-        'stock',
-        'dernierSortie',
-        'nombreSortie',
-        'dateSortie',
+        'type',
+        'provDest',
+        'quantiteEntree',
+        'quantiteSortie',
+        'lot',
+        'observation',
+        'date',
     ];
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEntreesTable extends Migration
+class CreateHistoriquesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateEntreesTable extends Migration
      */
     public function up()
     {
-        Schema::create('entrees', function (Blueprint $table) {
+        Schema::create('historiques', function (Blueprint $table) {
             $table->id();
             $table->integer('idMedicament');
-            $table->integer('stock');
-            $table->integer('dernierEntree');
-            $table->date('dateDernierEntree');
-            $table->integer('nombrePlaquetteEntree');
-            $table->integer('nombreGraineEntree');
+            $table->date('date');
+            $table->boolean('type');
+            $table->integer('quantiteEntree')->nullable();
+            $table->integer('quantiteSortie')->nullable();
+            $table->string('provDest');
+            $table->string('lot');
+            $table->text('observation')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class CreateEntreesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('entrees');
+        Schema::dropIfExists('historiques');
     }
 }

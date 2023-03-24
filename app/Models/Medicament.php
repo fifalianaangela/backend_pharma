@@ -11,14 +11,16 @@ class Medicament extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nomMedicament',
-        'codeProduit',
-        'quantite',
+        'denomination',
+        'forme',
+        'presentation',
         'coutUnitaire',
         'prixVente',
-        'nombrePlaquette'
+        'nombrePlaquette',
+        'nombreGraine',
+        'dateExpiration'
     ];
-    
+
     public function stock()
     {
         return $this->hasOne(Stock::class);
