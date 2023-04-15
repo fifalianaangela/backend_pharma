@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entree;
 use App\Models\Historique;
 use App\Models\Medicament;
+use App\Models\Pharmacie;
 use App\Models\Sortie;
 use App\Models\Stock;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class SortieController extends Controller
                 'medicaments.id as idMedicament',
                 'medicaments.denomination',
                 'medicaments.nombreParBoite',
+                'medicaments.presentation',
                 'medicaments.forme',
             )->orderBy('id', 'desc')->get();
         return response()->json($sortie, 200);
@@ -28,6 +30,7 @@ class SortieController extends Controller
     {
         $medicament = Medicament::where('id', $request->idMedicament)->first();
         $stock = Stock::where('id', $request->id)->first();
+        $pharmacie = Pharmacie::where('idMedicament', $request->idMedicament)->first();
         Sortie::create(
             [
                 'idMedicament' => $request->idMedicament,
@@ -35,9 +38,27 @@ class SortieController extends Controller
                 'dateSortie' => $request->formattedDate,
                 'destination' => $request->destination,
                 'observation' => $request->observation,
+                'dateExpiration' => $stock->dateExpiration,
                 'lot' => $request->lot,
             ]
         );
+
+        if (!$pharmacie) {
+            Pharmacie::create(
+                [
+                    'idMedicament' => $request->idMedicament,
+                    'quantitePharmacie' => $request->quantiteSortie * $medicament->nombreParBoite,
+                    'dateExpiration' => $stock->dateExpiration,
+                ]
+            );
+        } else if ($pharmacie && $pharmacie->dateExpiration == $stock->dateExpiration) {
+            Pharmacie::where('idMedicament', $request->idMedicament)
+                ->update(
+                    [
+                        'quantitePharmacie' => $pharmacie->quantitePharmacie + $request->quantiteSortie * $medicament->nombreParBoite,
+                    ]
+                );
+        };
 
         if ($stock->quantiteStock > 0) {
             Stock::where('id', $request->id)
@@ -47,6 +68,8 @@ class SortieController extends Controller
                         'quantiteUnitaire' => ($stock->quantiteStock - $request->quantiteSortie) * $medicament->nombreParBoite,
                     ]
                 );
+        } else {
+            return response()->json(['message' => 'Un erreur se produit'], 500);
         }
 
         Historique::create(
@@ -69,12 +92,13 @@ class SortieController extends Controller
                 'quantiteSortie' => $request->quantiteSortie,
             ]
         );
-        Stock::where('idMedicament', $request->idM)->update(
-            [
-                'quantitePlaquette' => ($initial - $request->quantiteSortie) / $medicament->nombrePlaquette,
-                'quantiteUnitaire' => $initial - $request->quantiteSortie,
-            ]
-        );
+        Stock::where('idMedicament', $request->idM)
+            ->where('dateExpiration', $request->dateE)->update(
+                [
+                    'quantiteStock' => ($initial - $request->quantiteSortie) / $medicament->nombreParBoite,
+                    'quantiteUnitaire' => $initial - $request->quantiteSortie,
+                ]
+            );
         return response()->json(['message' => 'Success edited'], 200);
     }
 
@@ -83,14 +107,17 @@ class SortieController extends Controller
         $sortie = Sortie::where('id', $id)->first();
         Sortie::destroy($id);
         $medicament = Medicament::where('id', $sortie->idMedicament)->first();
-        $stock = Stock::where('idMedicament', $medicament->id)->first();
+        $stock = Stock::where('idMedicament', $medicament->id)
+            ->where('dateExpiration', $sortie->dateExpiration)
+            ->first();
         Stock::where('idMedicament', $sortie->idMedicament)
+            ->where('dateExpiration', $sortie->dateExpiration)
             ->update(
                 [
-                    'quantitePlaquette' => ($stock->quantiteUnitaire + $sortie->quantiteSortie) / $medicament->nombrePlaquette,
-                    'quantiteUnitaire' => $stock->quantiteUnitaire + $sortie->quantiteSortie,
+                    'quantiteStock' => $stock->quantiteStock + $sortie->quantiteSortie,
+                    'quantiteUnitaire' => ($stock->quantiteStock + $sortie->quantiteSortie) * $medicament->nombreParBoite,
                 ]
             );
-        return response()->json(['message' => "Suppresion d'entrée avec succèss"], 200);
+        return response()->json(['message' => "Suppression d'entrée avec succèss"], 200);
     }
 }

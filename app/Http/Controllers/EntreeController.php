@@ -83,8 +83,8 @@ class EntreeController extends Controller
             $initial = $stock->quantitePlaquette - $entree->quantiteEntree;
             Stock::where('idMedicament', $request->idM)->update(
                 [
-                    'quantitePlaquette' => $initial + $request->quantiteEntree,
-                    'quantiteUnitaire' => ($initial + $request->quantiteEntree) * $medicament->nombrePlaquette,
+                    'quantiteStock' => $initial + $request->quantiteEntree,
+                    'quantiteUnitaire' => ($initial + $request->quantiteEntree) * $medicament->nombreParBoite,
                 ]
             );
         }

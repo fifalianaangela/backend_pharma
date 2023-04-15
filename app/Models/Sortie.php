@@ -12,6 +12,7 @@ class Sortie extends Model
         'idMedicament',
         'quantiteSortie',
         'dateSortie',
+        'dateExpiration',
         'destination',
         'observation',
         'lot',

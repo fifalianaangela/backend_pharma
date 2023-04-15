@@ -5,6 +5,7 @@ use App\Http\Controllers\EntreeController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\MedicamentController;
+use App\Http\Controllers\PharmacieController;
 use App\Http\Controllers\SortieController;
 use App\Http\Controllers\StockController;
 use Illuminate\Http\Request;
@@ -60,3 +61,6 @@ Route::get('/historiques', [HistoriqueController::class, 'index']);
 
 // route for stocks
 Route::get('/stocks', [StockController::class, 'index']);
+
+// route for pharmacies
+Route::get('/pharmacies', [PharmacieController::class, 'index']);
