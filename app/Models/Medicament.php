@@ -16,8 +16,7 @@ class Medicament extends Model
         'presentation',
         'coutUnitaire',
         'prixVente',
-        'nombrePlaquette',
-        'nombreGraine',
+        'nombreParBoite',
         'dateExpiration'
     ];
 

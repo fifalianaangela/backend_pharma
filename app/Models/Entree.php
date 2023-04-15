@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Entree extends Model
 {
     use HasFactory;
-    protected $fillable = ['idMedicament', 'stock', 'dernierEntree', 'dateDernierEntree', 'nombrePlaquetteEntree', 'nombreGraineEntree'];
+    protected $fillable = ['idMedicament', 'quantiteEntree', 'provenance', 'lot', 'dateEntree', 'dateExpiration', 'observation'];
 }

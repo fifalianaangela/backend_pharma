@@ -16,11 +16,12 @@ class CreateEntreesTable extends Migration
         Schema::create('entrees', function (Blueprint $table) {
             $table->id();
             $table->integer('idMedicament');
-            $table->integer('stock');
-            $table->integer('dernierEntree');
-            $table->date('dateDernierEntree');
-            $table->integer('nombrePlaquetteEntree');
-            $table->integer('nombreGraineEntree');
+            $table->integer('quantiteEntree');
+            $table->date('dateEntree');
+            $table->string('dateExpiration');
+            $table->string('observation');
+            $table->string('lot');
+            $table->string('provenance');
             $table->timestamps();
         });
     }

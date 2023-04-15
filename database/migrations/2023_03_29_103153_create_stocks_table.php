@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSortiesTable extends Migration
+class CreateStocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateSortiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sorties', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->integer('idMedicament');
-            $table->integer('quantiteSortie');
-            $table->date('dateSortie');
-            $table->string('destination');
-            $table->string('observation');
-            $table->string('lot');
+            $table->string('dateExpiration');
+            $table->integer('quantiteStock');
+            $table->integer('quantiteUnitaire');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateSortiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sorties');
+        Schema::dropIfExists('stocks');
     }
 }

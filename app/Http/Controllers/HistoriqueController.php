@@ -14,10 +14,9 @@ class HistoriqueController extends Controller
                 'historiques.*',
                 'medicaments.id as idMedicament',
                 'medicaments.denomination',
-                'medicaments.dateExpiration',
                 'medicaments.forme',
                 'medicaments.presentation',
-            )->get();
+            )->orderBy('id', 'desc')->get();
         return response()->json($historiques);
     }
 }

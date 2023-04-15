@@ -16,13 +16,7 @@ class CreateHistoriquesTable extends Migration
         Schema::create('historiques', function (Blueprint $table) {
             $table->id();
             $table->integer('idMedicament');
-            $table->date('date');
             $table->boolean('type');
-            $table->integer('quantiteEntree')->nullable();
-            $table->integer('quantiteSortie')->nullable();
-            $table->string('provDest');
-            $table->string('lot');
-            $table->text('observation')->nullable();
             $table->timestamps();
         });
     }

@@ -10,9 +10,10 @@ class Sortie extends Model
     use HasFactory;
     protected $fillable = [
         'idMedicament',
-        'stock',
-        'dernierSortie',
-        'nombreSortie',
+        'quantiteSortie',
         'dateSortie',
+        'destination',
+        'observation',
+        'lot',
     ];
 }

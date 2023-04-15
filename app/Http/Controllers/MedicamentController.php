@@ -27,12 +27,10 @@ class MedicamentController extends Controller
                     'presentation' => $request->presentation,
                     'coutUnitaire' => $request->coutUnitaire,
                     'prixVente' => $request->prixVente,
-                    'nombrePlaquette' => $request->nombrePlaquette,
-                    'nombreGraine' => $request->nombreGraine,
-                    'dateExpiration' => $request->dateExpiration,
+                    'nombreParBoite' => $request->nombreParBoite,
                 ]
             );
-            return response()->json('Medicament ajouté avec succèss');
+            return response()->json(['message' => 'Medicament ajouté avec succèss'], 200);
         } elseif ($medicament && strtolower($medicament->forme) !== strtolower($request->forme)) {
             Medicament::create(
                 [
@@ -41,14 +39,12 @@ class MedicamentController extends Controller
                     'presentation' => $request->presentation,
                     'coutUnitaire' => $request->coutUnitaire,
                     'prixVente' => $request->prixVente,
-                    'nombrePlaquette' => $request->nombrePlaquette,
-                    'nombreGraine' => $request->nombreGraine,
-                    'dateExpiration' => $request->dateExpiration,
+                    'nombreParBoite' => $request->nombreParBoite,
                 ]
             );
             return response()->json('Medicament ajouté avec succèss');
         } elseif ($medicament && strtolower($medicament->forme) === strtolower($request->forme)) {
-            return response()->json('Medicament existe déjà dans la base de donnée');
+            return response()->json(['message' => 'Medicament existe déjà dans la base de donnée'], 200);
         }
     }
 
@@ -61,18 +57,17 @@ class MedicamentController extends Controller
                 'presentation' => $request->presentation,
                 'coutUnitaire' => $request->coutUnitaire,
                 'prixVente' => $request->prixVente,
-                'nombrePlaquette' => $request->nombrePlaquette,
-                'dateExpiration' => $request->dateExpiration,
+                'nombreParBoite' => $request->nombreParBoite,
             ]);
+        return response()->json(['message' => 'Modification avec succes'], 200);
     }
 
     public function destroy($id)
     {
         try {
             Medicament::destroy($id);
-            return response()->json(['message' => 'Suppression avec succes']);
+            return response()->json(['message' => 'Suppression avec succes'], 200);
         } catch (\Exception $e) {
-            // \Log::error($e->getMessage());
             return response()->json([
                 'message' => 'Une erreur se produite lors de la suppression!!'
             ], 500);

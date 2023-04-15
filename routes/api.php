@@ -6,6 +6,7 @@ use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\MedicamentController;
 use App\Http\Controllers\SortieController;
+use App\Http\Controllers\StockController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +51,12 @@ Route::delete('/entrees/{id}', [EntreeController::class, 'destroy']);
 
 // route for sorties
 Route::get('/sorties', [SortieController::class, 'index']);
+Route::post('/sorties', [SortieController::class, 'store']);
+Route::put('/sorties/{id}', [SortieController::class, 'update']);
+Route::delete('/sorties/{id}', [SortieController::class, 'destroy']);
 
 // route for historiques
 Route::get('/historiques', [HistoriqueController::class, 'index']);
+
+// route for stocks
+Route::get('/stocks', [StockController::class, 'index']);

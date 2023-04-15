@@ -20,9 +20,7 @@ class CreateMedicamentsTable extends Migration
             $table->string('presentation');
             $table->float('coutUnitaire');
             $table->float('prixVente');
-            $table->integer('nombrePlaquette');
-            $table->integer('nombreGraine');
-            $table->date('dateExpiration');
+            $table->integer('nombreParBoite');
             $table->timestamps();
         });
     }
