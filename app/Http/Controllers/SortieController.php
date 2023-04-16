@@ -30,7 +30,8 @@ class SortieController extends Controller
     {
         $medicament = Medicament::where('id', $request->idMedicament)->first();
         $stock = Stock::where('id', $request->id)->first();
-        $pharmacie = Pharmacie::where('idMedicament', $request->idMedicament)->first();
+        $pharmacie = Pharmacie::where('idMedicament', $request->idMedicament)
+            ->where('dateExpiration', $stock->dateExpiration)->first();
         Sortie::create(
             [
                 'idMedicament' => $request->idMedicament,
@@ -43,7 +44,14 @@ class SortieController extends Controller
             ]
         );
 
-        if (!$pharmacie) {
+        if ($pharmacie) {
+            Pharmacie::where('idMedicament', $request->idMedicament)
+                ->update(
+                    [
+                        'quantitePharmacie' => $pharmacie->quantitePharmacie + $request->quantiteSortie * $medicament->nombreParBoite,
+                    ]
+                );
+        } else if (!$pharmacie) {
             Pharmacie::create(
                 [
                     'idMedicament' => $request->idMedicament,
@@ -51,13 +59,6 @@ class SortieController extends Controller
                     'dateExpiration' => $stock->dateExpiration,
                 ]
             );
-        } else if ($pharmacie && $pharmacie->dateExpiration == $stock->dateExpiration) {
-            Pharmacie::where('idMedicament', $request->idMedicament)
-                ->update(
-                    [
-                        'quantitePharmacie' => $pharmacie->quantitePharmacie + $request->quantiteSortie * $medicament->nombreParBoite,
-                    ]
-                );
         };
 
         if ($stock->quantiteStock > 0) {
@@ -85,8 +86,12 @@ class SortieController extends Controller
     {
         $sortie = Sortie::where('id', $id)->first();
         $medicament = Medicament::where('id', $request->idM)->first();
-        $stock = Stock::where('idMedicament', $request->idM)->first();
-        $initial = ($stock->quantiteUnitaire) + $sortie->quantiteSortie;
+        $stock = Stock::where('idMedicament', $request->idM)
+            ->where('dateExpiration', $request->dateE)->first();
+        $pharmacie = Pharmacie::where('idMedicament', $request->idM)
+            ->where('dateExpiration', $request->dateE)->first();
+        $initial = $stock->quantiteStock + $sortie->quantiteSortie;
+        $initialPharma = $pharmacie->quantitePharmacie - ($sortie->quantiteSortie * $medicament->nombreParBoite);
         Sortie::where('id', $id)->update(
             [
                 'quantiteSortie' => $request->quantiteSortie,
@@ -95,8 +100,14 @@ class SortieController extends Controller
         Stock::where('idMedicament', $request->idM)
             ->where('dateExpiration', $request->dateE)->update(
                 [
-                    'quantiteStock' => ($initial - $request->quantiteSortie) / $medicament->nombreParBoite,
-                    'quantiteUnitaire' => $initial - $request->quantiteSortie,
+                    'quantiteStock' => $initial - $request->quantiteSortie,
+                    'quantiteUnitaire' => ($initial - $request->quantiteSortie) * $medicament->nombreParBoite,
+                ]
+            );
+        Pharmacie::where('idMedicament', $request->idM)
+            ->where('dateExpiration', $request->dateE)->update(
+                [
+                    'quantitePharmacie' => $initialPharma + ($request->quantiteSortie * $medicament->nombreParBoite),
                 ]
             );
         return response()->json(['message' => 'Success edited'], 200);

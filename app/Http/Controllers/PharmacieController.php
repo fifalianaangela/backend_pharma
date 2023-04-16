@@ -15,7 +15,7 @@ class PharmacieController extends Controller
     public function index()
     {
         $pharmacie = Pharmacie::join('medicaments', 'medicaments.id', '=', 'pharmacies.idMedicament')
-            ->join('stocks', 'stocks.idMedicament', '=', 'pharmacies.idMedicament')
+            // ->join('stocks', 'stocks.idMedicament', '=', 'pharmacies.idMedicament')
             ->select(
                 'pharmacies.*',
                 'medicaments.id as idMedicament',

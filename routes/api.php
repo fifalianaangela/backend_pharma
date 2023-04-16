@@ -8,19 +8,9 @@ use App\Http\Controllers\MedicamentController;
 use App\Http\Controllers\PharmacieController;
 use App\Http\Controllers\SortieController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\VenteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -64,3 +54,8 @@ Route::get('/stocks', [StockController::class, 'index']);
 
 // route for pharmacies
 Route::get('/pharmacies', [PharmacieController::class, 'index']);
+
+// route for pharmacies
+Route::get('/ventes', [VenteController::class, 'index']);
+Route::post('/ventes', [VenteController::class, 'store']);
+Route::put('/ventes/{id}', [VenteController::class, 'update']);

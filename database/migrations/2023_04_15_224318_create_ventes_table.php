@@ -20,6 +20,7 @@ class CreateVentesTable extends Migration
             $table->date('dateVente');
             $table->text('acheteur');
             $table->integer('prixTotal');
+            $table->string('dateExpiration');
             $table->timestamps();
         });
     }
