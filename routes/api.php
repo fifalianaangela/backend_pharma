@@ -9,6 +9,7 @@ use App\Http\Controllers\PharmacieController;
 use App\Http\Controllers\SortieController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\VenteController;
+use App\Http\Controllers\TriggersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -59,3 +60,6 @@ Route::get('/pharmacies', [PharmacieController::class, 'index']);
 Route::get('/ventes', [VenteController::class, 'index']);
 Route::post('/ventes', [VenteController::class, 'store']);
 Route::put('/ventes/{id}', [VenteController::class, 'update']);
+
+// route for trigger
+Route::get('/triggers', [TriggersController::class, 'index']);

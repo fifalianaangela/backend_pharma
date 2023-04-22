@@ -23,6 +23,25 @@ class CreateMedicamentsTable extends Migration
             $table->integer('nombreParBoite');
             $table->timestamps();
         });
+
+        DB::unprepared('
+        CREATE TRIGGER medicament_created AFTER INSERT ON medicaments
+        FOR EACH ROW
+        BEGIN
+            SET @denomination = NEW.denomination;
+            SET @forme = NEW.forme;
+            INSERT INTO medicament_triggers(denomination, forme) VALUES (@denomination, @forme);
+        END
+    ');
+    DB::unprepared('
+        CREATE TRIGGER medicament_update AFTER UPDATE ON medicaments
+        FOR EACH ROW
+        BEGIN
+            SET @denomination = NEW.denomination;
+            SET @forme = NEW.forme;
+            INSERT INTO medicament_triggers(denomination, forme) VALUES (@denomination, @forme);
+        END
+    ');
     }
 
     /**
