@@ -24,6 +24,8 @@ class CreateEntreesTable extends Migration
             $table->string('provenance');
             $table->timestamps();
         });
+
+        
     }
 
     /**

@@ -63,3 +63,4 @@ Route::put('/ventes/{id}', [VenteController::class, 'update']);
 
 // route for trigger
 Route::get('/triggers', [TriggersController::class, 'index']);
+Route::get('/entreetriggers', [TriggersController::class, 'index1']);
