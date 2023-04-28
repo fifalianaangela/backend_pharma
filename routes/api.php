@@ -4,6 +4,7 @@ use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\EntreeController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\HistoriqueController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MedicamentController;
 use App\Http\Controllers\PharmacieController;
 use App\Http\Controllers\SortieController;
@@ -61,5 +62,10 @@ Route::get('/ventes', [VenteController::class, 'index']);
 Route::post('/ventes', [VenteController::class, 'store']);
 Route::put('/ventes/{id}', [VenteController::class, 'update']);
 
+
 // route for trigger
 Route::get('/triggers', [TriggersController::class, 'index']);
+
+//route for auth
+Route::post('login', [LoginController::class, 'authenticate']);
+Route::post('register', [LoginController::class, 'register']);

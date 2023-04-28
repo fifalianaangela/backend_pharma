@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateMedicamentsTable extends Migration
@@ -33,7 +34,7 @@ class CreateMedicamentsTable extends Migration
             INSERT INTO medicament_triggers(denomination, forme) VALUES (@denomination, @forme);
         END
     ');
-    DB::unprepared('
+        DB::unprepared('
         CREATE TRIGGER medicament_update AFTER UPDATE ON medicaments
         FOR EACH ROW
         BEGIN
