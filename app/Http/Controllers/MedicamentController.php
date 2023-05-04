@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Medicament;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MedicamentController extends Controller
@@ -20,6 +21,7 @@ class MedicamentController extends Controller
             ->where('forme', $request->forme)->first();
 
         if (!$medicament) {
+            $user = Auth::user();
             Medicament::create(
                 [
                     'denomination' => $request->denomination,
@@ -28,6 +30,7 @@ class MedicamentController extends Controller
                     'coutUnitaire' => $request->coutUnitaire,
                     'prixVente' => $request->prixVente,
                     'nombreParBoite' => $request->nombreParBoite,
+                    'userId' => $request->userId,
                 ]
             );
             return response()->json(['message' => 'Medicament ajouté avec succèss'], 200);
@@ -40,6 +43,7 @@ class MedicamentController extends Controller
                     'coutUnitaire' => $request->coutUnitaire,
                     'prixVente' => $request->prixVente,
                     'nombreParBoite' => $request->nombreParBoite,
+                    'userId' => $request->userId,
                 ]
             );
             return response()->json('Medicament ajouté avec succèss');

@@ -45,7 +45,7 @@ class LoginController extends Controller
             if ($validateUser->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'validation error',
+                    'message' => 'Erreur de validation de l\'utilisateur',
                     'errors' => $validateUser->errors()
                 ], 401);
             }
@@ -53,7 +53,7 @@ class LoginController extends Controller
             if (!Auth::attempt($request->only(['email', 'password']))) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Email & Password does not match with our record.',
+                    'message' => 'Email ou mot de passe invalide',
                 ], 401);
             }
 
@@ -61,8 +61,9 @@ class LoginController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'User Logged In Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
+                'message' => 'Authentifier avec succèss',
+                'token' => $user->createToken("API TOKEN")->plainTextToken,
+                'userInfo' => $user
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -75,7 +76,6 @@ class LoginController extends Controller
     public function register(Request $request)
     {
         try {
-            //Validated
             $validateUser = Validator::make(
                 $request->all(),
                 [
@@ -96,12 +96,13 @@ class LoginController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
+                'isAdmin' => 0
             ]);
 
             return response()->json([
                 'status' => true,
-                'message' => 'User Created Successfully',
+                'message' => 'Utilisateur crée avec succès',
                 'token' => $user->createToken("­API TOKEN")->plainTextToken
             ], 200);
         } catch (\Throwable $th) {

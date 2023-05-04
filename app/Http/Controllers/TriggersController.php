@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\MedicamentTriggers;
 use App\Models\EntreeTriggers;
 
@@ -10,7 +11,13 @@ class TriggersController extends Controller
 {
     public function index()
     {
-        $triggers = MedicamentTriggers::all();
+        $triggers = MedicamentTriggers::join('users', 'users.id', '=', 'medicament_triggers.userId')
+            ->select(
+                'medicament_triggers.*',
+                'users.email',
+                'users.name', 
+            )
+            ->get();
         return response()->json($triggers);
     }
     public function index1()

@@ -18,6 +18,8 @@ class CreateMedicamentTriggersTable extends Migration
             $table->timestamps();
             $table->string('denomination');
             $table->string('forme');
+            $table->string('type');
+            $table->integer('userId');
         });
     }
 

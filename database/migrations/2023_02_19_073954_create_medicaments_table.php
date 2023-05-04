@@ -16,6 +16,7 @@ class CreateMedicamentsTable extends Migration
     {
         Schema::create('medicaments', function (Blueprint $table) {
             $table->id();
+            $table->integer('userId');
             $table->string('denomination');
             $table->string('forme');
             $table->string('presentation');
@@ -31,7 +32,9 @@ class CreateMedicamentsTable extends Migration
         BEGIN
             SET @denomination = NEW.denomination;
             SET @forme = NEW.forme;
-            INSERT INTO medicament_triggers(denomination, forme) VALUES (@denomination, @forme);
+            SET @userId = NEW.userId;
+            SET @type = "ajout medicament";
+            INSERT INTO medicament_triggers(denomination, forme, userId, type) VALUES (@denomination, @forme, @userId, @type);
         END
     ');
         DB::unprepared('
@@ -40,8 +43,22 @@ class CreateMedicamentsTable extends Migration
         BEGIN
             SET @denomination = NEW.denomination;
             SET @forme = NEW.forme;
-            INSERT INTO medicament_triggers(denomination, forme) VALUES (@denomination, @forme);
+            SET @userId = NEW.userId;
+            SET @type = "modification medicament";
+            INSERT INTO medicament_triggers(denomination, forme, userId, type) VALUES (@denomination, @forme, @userId, @type);
         END
+    ');
+
+        DB::unprepared('
+        CREATE TRIGGER medicament_delete AFTER DELETE ON medicaments
+        FOR EACH ROW
+        BEGIN
+            SET @denomination = OLD.denomination;
+            SET @forme = OLD.forme;
+            SET @userId = OLD.userId;
+            SET @type = "suppression medicament";
+            INSERT INTO medicament_triggers(denomination, forme, userId, type) VALUES (@denomination, @forme, @userId, @type);
+        END;
     ');
     }
 

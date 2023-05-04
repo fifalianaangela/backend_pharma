@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class MedicamentTriggers extends Model
 {
     use HasFactory;
-    protected $fillable = ['denomination', 'forme'];
+    protected $fillable = ['denomination', 'forme', 'userId'];
 }

@@ -68,4 +68,4 @@ Route::get('/triggers', [TriggersController::class, 'index']);
 
 //route for auth
 Route::post('login', [LoginController::class, 'authenticate']);
-Route::post('register', [LoginController::class, 'authenticate']);
+Route::post('register', [LoginController::class, 'register']);
