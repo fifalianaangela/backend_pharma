@@ -17,17 +17,15 @@ class MedicamentController extends Controller
 
     public function store(Request $request)
     {
-        $medicament = Medicament::where('denomination', $request->denomination)
+        $medicament = Medicament::where('denomination', $request->denomination . " " . $request->dosage)
             ->where('forme', $request->forme)->first();
 
         if (!$medicament) {
-            $user = Auth::user();
             Medicament::create(
                 [
-                    'denomination' => $request->denomination,
+                    'denomination' => $request->denomination . " " . $request->dosage,
                     'forme' => $request->forme,
                     'presentation' => $request->presentation,
-                    'coutUnitaire' => $request->coutUnitaire,
                     'prixVente' => $request->prixVente,
                     'nombreParBoite' => $request->nombreParBoite,
                     'userId' => $request->userId,
@@ -37,10 +35,9 @@ class MedicamentController extends Controller
         } elseif ($medicament && strtolower($medicament->forme) !== strtolower($request->forme)) {
             Medicament::create(
                 [
-                    'denomination' => $request->denomination,
+                    'denomination' => $request->denomination . " " . $request->dosage,
                     'forme' => $request->forme,
                     'presentation' => $request->presentation,
-                    'coutUnitaire' => $request->coutUnitaire,
                     'prixVente' => $request->prixVente,
                     'nombreParBoite' => $request->nombreParBoite,
                     'userId' => $request->userId,
@@ -56,10 +53,9 @@ class MedicamentController extends Controller
     {
         Medicament::where('id', $id)
             ->update([
-                'denomination' => $request->denomination,
+                'denomination' => $request->denomination." ".$request->dosage,
                 'forme' => $request->forme,
                 'presentation' => $request->presentation,
-                'coutUnitaire' => $request->coutUnitaire,
                 'prixVente' => $request->prixVente,
                 'nombreParBoite' => $request->nombreParBoite,
             ]);

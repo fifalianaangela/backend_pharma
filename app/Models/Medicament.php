@@ -14,7 +14,6 @@ class Medicament extends Model
         'denomination',
         'forme',
         'presentation',
-        'coutUnitaire',
         'prixVente',
         'nombreParBoite',
         'dateExpiration',
