@@ -11,6 +11,8 @@ use App\Http\Controllers\SortieController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\VenteController;
 use App\Http\Controllers\TriggersController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VenteJournalierController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -57,14 +59,20 @@ Route::get('/stocks', [StockController::class, 'index']);
 // route for pharmacies
 Route::get('/pharmacies', [PharmacieController::class, 'index']);
 
-// route for pharmacies
+// route for ventes
 Route::get('/ventes', [VenteController::class, 'index']);
 Route::post('/ventes', [VenteController::class, 'store']);
 Route::put('/ventes/{id}', [VenteController::class, 'update']);
 
+// route for venteJournalier
+Route::get('/venteJournalier', [VenteJournalierController::class, 'index']);
 
 // route for trigger
 Route::get('/triggers', [TriggersController::class, 'index']);
+
+// route for user
+Route::get('/users', [UserController::class, 'index']);
+Route::put('/users/{id}', [UserController::class, 'update']);
 
 //route for auth
 Route::post('login', [LoginController::class, 'authenticate']);

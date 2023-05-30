@@ -35,9 +35,7 @@ class EntreeController extends Controller
                 'quantiteEntree' => $request->quantiteEntree,
                 'dateEntree' => $request->dateEntree,
                 'dateExpiration' => $request->dateExp,
-                'observation' => $request->observation,
                 'lot' => $request->lot,
-                'provenance' => $request->provenance,
             ]
         );
 

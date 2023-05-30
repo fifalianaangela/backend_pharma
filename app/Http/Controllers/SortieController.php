@@ -37,10 +37,7 @@ class SortieController extends Controller
                 'idMedicament' => $request->idMedicament,
                 'quantiteSortie' => $request->quantiteSortie,
                 'dateSortie' => $request->formattedDate,
-                'destination' => $request->destination,
-                'observation' => $request->observation,
                 'dateExpiration' => $stock->dateExpiration,
-                'lot' => $request->lot,
             ]
         );
 

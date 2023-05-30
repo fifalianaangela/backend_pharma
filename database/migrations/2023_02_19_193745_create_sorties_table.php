@@ -19,9 +19,6 @@ class CreateSortiesTable extends Migration
             $table->integer('quantiteSortie');
             $table->date('dateSortie');
             $table->string('dateExpiration');
-            $table->string('destination');
-            $table->string('observation');
-            $table->string('lot');
             $table->timestamps();
         });
     }

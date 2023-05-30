@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Medicament;
 use App\Models\Pharmacie;
 use App\Models\Vente;
+use App\Models\VenteJournalier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 class VenteController extends Controller
 {
@@ -29,6 +31,8 @@ class VenteController extends Controller
         $medicament = Medicament::where('id', $request->idMedicament)->first();
         $pharmacie = Pharmacie::where('idMedicament', $request->idMedicament)
             ->where('dateExpiration', $request->dateExpiration)->first();
+        $venteJournalier = VenteJournalier::where('idMedicament', $request->idMedicament)
+            ->where('dateVente', date("Y-m-d"))->first();
         Vente::create([
             'idMedicament' => $request->idMedicament,
             'dateExpiration' => $request->dateExpiration,
@@ -43,6 +47,23 @@ class VenteController extends Controller
             ->update([
                 'quantitePharmacie' => $pharmacie->quantitePharmacie - $request->quantiteVente
             ]);
+        if ($venteJournalier) {
+            VenteJournalier::where('idMedicament', $request->idMedicament)->update(
+                [
+                    'vente' => $venteJournalier->vente . '+' . $request->quantiteVente,
+                    'prixTotal' => $venteJournalier->prixTotal + ($request->quantiteVente * $medicament->prixVente),
+                ]
+            );
+        } else {
+            VenteJournalier::create(
+                [
+                    'idMedicament' => $request->idMedicament,
+                    'vente' => $request->quantiteVente,
+                    'dateVente' => date("Y-m-d"),
+                    'prixTotal' => $request->quantiteVente * $medicament->prixVente,
+                ]
+            );
+        }
 
         return response()->json(['message' => 'Vendu avec succèss'], 200);
     }

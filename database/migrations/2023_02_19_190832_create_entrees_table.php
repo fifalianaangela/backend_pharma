@@ -19,9 +19,7 @@ class CreateEntreesTable extends Migration
             $table->integer('quantiteEntree');
             $table->date('dateEntree');
             $table->string('dateExpiration');
-            $table->string('observation');
             $table->string('lot');
-            $table->string('provenance');
             $table->timestamps();
         });
 
