@@ -7,7 +7,6 @@ use App\Models\Pharmacie;
 use App\Models\Vente;
 use App\Models\VenteJournalier;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
 
 class VenteController extends Controller
 {
@@ -48,12 +47,13 @@ class VenteController extends Controller
                 'quantitePharmacie' => $pharmacie->quantitePharmacie - $request->quantiteVente
             ]);
         if ($venteJournalier) {
-            VenteJournalier::where('idMedicament', $request->idMedicament)->update(
-                [
-                    'vente' => $venteJournalier->vente . '+' . $request->quantiteVente,
-                    'prixTotal' => $venteJournalier->prixTotal + ($request->quantiteVente * $medicament->prixVente),
-                ]
-            );
+            VenteJournalier::where('idMedicament', $request->idMedicament)
+                ->where('dateVente', $request->formattedDate)->update(
+                    [
+                        'vente' => $venteJournalier->vente . '+' . $request->quantiteVente,
+                        'prixTotal' => $venteJournalier->prixTotal + ($request->quantiteVente * $medicament->prixVente),
+                    ]
+                );
         } else {
             VenteJournalier::create(
                 [
@@ -83,6 +83,20 @@ class VenteController extends Controller
                     'prixTotal' => $request->quantiteVendu * $medicament->prixVente
                 ]
             );
+        $venteJournalier = Vente::where('idMedicament', $vente->idMedicament)->get();
+        $vj = "";
+        $vjChiffre = 0;
+        foreach ($venteJournalier as $venteJ) {
+            $vj = $vj . "+" . $venteJ->quantiteVendu;
+            $vjChiffre = $vjChiffre + $venteJ->quantiteVendu;
+        }
+        $vjModifier = preg_replace("/\+/", "", $vj, 1);
+        VenteJournalier::where('idMedicament', $vente->idMedicament)
+            ->where('dateVente', $request->dateVente)
+            ->update([
+                'vente' => $vjModifier,
+                'prixTotal' => $vjChiffre * $medicament->prixVente,
+            ]);
         Pharmacie::where('idMedicament', $vente->idMedicament)
             ->where('dateExpiration', $vente->dateExpiration)
             ->update([
