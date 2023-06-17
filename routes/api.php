@@ -66,6 +66,7 @@ Route::put('/ventes/{id}', [VenteController::class, 'update']);
 
 // route for venteJournalier
 Route::get('/venteJournalier', [VenteJournalierController::class, 'index']);
+Route::get('/filterVenteJournalier/{debut}/{fin}', [VenteJournalierController::class, 'filterVenteJournalier']);
 
 // route for trigger
 Route::get('/triggers', [TriggersController::class, 'index']);
