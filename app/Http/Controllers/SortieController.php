@@ -41,22 +41,41 @@ class SortieController extends Controller
             ]
         );
 
-        if ($pharmacie) {
-            Pharmacie::where('idMedicament', $request->idMedicament)
-                ->update(
+        if ($medicament->unite == 'cc') {
+            if ($pharmacie) {
+                Pharmacie::where('idMedicament', $request->idMedicament)
+                    ->update(
+                        [
+                            'quantitePharmacie' => ($pharmacie->quantitePharmacie + $request->quantiteSortie * $medicament->nombreParBoite)*1000,
+                        ]
+                    );
+            } else if (!$pharmacie) {
+                Pharmacie::create(
                     [
-                        'quantitePharmacie' => $pharmacie->quantitePharmacie + $request->quantiteSortie * $medicament->nombreParBoite,
+                        'idMedicament' => $request->idMedicament,
+                        'quantitePharmacie' => ($request->quantiteSortie * $medicament->nombreParBoite)*1000,
+                        'dateExpiration' => $stock->dateExpiration,
                     ]
                 );
-        } else if (!$pharmacie) {
-            Pharmacie::create(
-                [
-                    'idMedicament' => $request->idMedicament,
-                    'quantitePharmacie' => $request->quantiteSortie * $medicament->nombreParBoite,
-                    'dateExpiration' => $stock->dateExpiration,
-                ]
-            );
-        };
+            };
+        } else {
+            if ($pharmacie) {
+                Pharmacie::where('idMedicament', $request->idMedicament)
+                    ->update(
+                        [
+                            'quantitePharmacie' => $pharmacie->quantitePharmacie + $request->quantiteSortie * $medicament->nombreParBoite,
+                        ]
+                    );
+            } else if (!$pharmacie) {
+                Pharmacie::create(
+                    [
+                        'idMedicament' => $request->idMedicament,
+                        'quantitePharmacie' => $request->quantiteSortie * $medicament->nombreParBoite,
+                        'dateExpiration' => $stock->dateExpiration,
+                    ]
+                );
+            };
+        }
 
         if ($stock->quantiteStock > 0) {
             Stock::where('id', $request->id)

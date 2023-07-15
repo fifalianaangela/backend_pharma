@@ -20,6 +20,7 @@ class VenteController extends Controller
                 'medicaments.presentation',
                 'medicaments.forme',
                 'medicaments.prixVente',
+                'medicaments.unite',
             )->orderBy('id', 'desc')->get();
         return response()->json($vente, 200);
     }

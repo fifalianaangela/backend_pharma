@@ -16,6 +16,7 @@ class StockController extends Controller
                 'medicaments.denomination',
                 'medicaments.presentation',
                 'medicaments.forme',
+                'medicaments.unite',
             )->orderBy('id', 'desc')->get();
         return response()->json($sortie, 200);
     }

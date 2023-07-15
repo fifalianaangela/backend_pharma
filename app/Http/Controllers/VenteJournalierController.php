@@ -16,6 +16,7 @@ class VenteJournalierController extends Controller
                 'medicaments.denomination',
                 'medicaments.forme',
                 'medicaments.presentation',
+                'medicaments.unite',
             )->orderBy('id', 'desc')->get();
         return response()->json($vente, 200);
     }

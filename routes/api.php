@@ -58,6 +58,7 @@ Route::get('/stocks', [StockController::class, 'index']);
 
 // route for pharmacies
 Route::get('/pharmacies', [PharmacieController::class, 'index']);
+Route::post('/pharmacies', [PharmacieController::class, 'store']);
 
 // route for ventes
 Route::get('/ventes', [VenteController::class, 'index']);

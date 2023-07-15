@@ -22,6 +22,7 @@ class CreateMedicamentsTable extends Migration
             $table->string('presentation');
             $table->float('prixVente');
             $table->integer('nombreParBoite');
+            $table->string('unite');
             $table->timestamps();
         });
 

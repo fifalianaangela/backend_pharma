@@ -7,12 +7,14 @@ use App\Models\Historique;
 use App\Models\Medicament;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Throwable;
 
 class EntreeController extends Controller
 {
     public function index()
     {
-        $entree = Entree::join('medicaments', 'medicaments.id', '=', 'entrees.idMedicament')
+        try {
+            $entree = Entree::join('medicaments', 'medicaments.id', '=', 'entrees.idMedicament')
             ->select(
                 'entrees.*',
                 'medicaments.id as idMedicament',
@@ -22,7 +24,12 @@ class EntreeController extends Controller
                 'medicaments.presentation',
             )
             ->get();
-        return response()->json($entree);
+            return response()->json($entree);
+        } catch (Throwable $e) {
+            report($e);     
+            return response()->json($entree);
+        }
+        
     }
 
     public function store(Request $request)
@@ -74,6 +81,7 @@ class EntreeController extends Controller
         Entree::where('id', $id)->update(
             [
                 'quantiteEntree' => $request->quantiteEntree,
+                'dateExpiration' => $request->dateExp,
             ]
         );
 

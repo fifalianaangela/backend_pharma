@@ -27,6 +27,7 @@ class MedicamentController extends Controller
                     'prixVente' => $request->prixVente,
                     'nombreParBoite' => $request->nombreParBoite,
                     'userId' => $request->userId,
+                    'unite' => $request->unite,
                 ]
             );
             return response()->json(['message' => 'Medicament ajouté avec succèss'], 200);
@@ -39,6 +40,7 @@ class MedicamentController extends Controller
                     'prixVente' => $request->prixVente,
                     'nombreParBoite' => $request->nombreParBoite,
                     'userId' => $request->userId,
+                    'unite' => $request->unite,
                 ]
             );
             return response()->json('Medicament ajouté avec succèss');
@@ -56,6 +58,7 @@ class MedicamentController extends Controller
                 'presentation' => $request->presentation,
                 'prixVente' => $request->prixVente,
                 'nombreParBoite' => $request->nombreParBoite,
+                'unite' => $request->unite,
             ]);
         return response()->json(['message' => 'Modification avec succes'], 200);
     }

@@ -16,7 +16,8 @@ class Medicament extends Model
         'prixVente',
         'nombreParBoite',
         'dateExpiration',
-        'userId'
+        'userId',
+        'unite'
     ];
 
     public function stock()
